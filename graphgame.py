@@ -3,6 +3,7 @@ import math
 import random
 import copy
 complexity = input('Enter complexity,from 1 to 169: ')
+complexmult = complexity * 0.1
 
 master = Tk()
 cvs = Canvas(master,width = 700,height = 700)
@@ -35,9 +36,9 @@ while ycounter <= 12:
 		datapoint = [pointx1,pointy1,pointx2,pointy2]
 		pointlist.append(datapoint)
 random.shuffle(pointlist)
-
 counter = 0
 meanlist = []
+shortpointlist = []
 while counter < complexity:
 	datapoint = pointlist[counter]
 	xcorner1 = datapoint[0]
@@ -51,6 +52,7 @@ while counter < complexity:
 	minipoint = [xmean,ymean]
 	meanlist.append(minipoint)
 
+	shortpointlist.append(datapoint)
 	cvs.create_rectangle(xcorner1,ycorner1,xcorner2,ycorner2,fill = 'green')
 	counter = counter + 1
 
@@ -66,13 +68,15 @@ for item in meanlist:
 			nodelist.append(nodes)
 
 while counter < len(meanlist):
-	print meanlist
 	point1 = meanlist[counter]
 	point1a = point1[0]
 	point1b = point1[1]
 	nodes = nodelist[counter]
 	nodecounter = 0
-	dummylist = copy.deepcopy(meanlist) 
+	dummylist = copy.deepcopy(meanlist)
+	nodes = int(nodes - (complexmult * (complexmult *0.55)))
+	if nodes %2 != 0:
+		nodes = nodes + 1
 	while nodecounter < nodes:
 
 		dummylen = len(dummylist) - 1
@@ -85,6 +89,18 @@ while counter < len(meanlist):
 			cvs.create_line(point1a,point1b,point2a,point2b,fill = 'red',width = 1.5)
 		nodecounter = nodecounter + 1
 
+
 	counter = counter + 1
+def clicker(event):
+	xevent = event.x
+	yevent = event.y
+	for item in shortpointlist:
+		xmin = item[0]
+		ymin = item[1]
+		xmax = item[2]
+		ymax = item[3] 
+		if xevent < xmax and xevent > xmin and yevent < ymax and yevent > ymin:
+			cvs.create_rectangle(xmin,ymin,xmax,ymax,fill = 'blue')
+cvs.bind('<Button-1>',clicker)
 
 master.mainloop()
