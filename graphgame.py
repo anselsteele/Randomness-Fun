@@ -1,7 +1,11 @@
+from __future__ import division
+#I can't believe I didn't know how to divide without decimal truncation until now...
 from Tkinter import *
 import math
 import random
 import copy
+unclick = 1
+
 complexity = input('Enter complexity,from 1 to 169: ')
 complexmult = complexity * 0.1
 
@@ -54,6 +58,8 @@ while counter < complexity:
 
 	shortpointlist.append(datapoint)
 	cvs.create_rectangle(xcorner1,ycorner1,xcorner2,ycorner2,fill = 'green')
+	if counter == 2:
+		previous = [xcorner1,ycorner1,xcorner2,ycorner2]
 	counter = counter + 1
 
 counter = 0
@@ -66,7 +72,7 @@ for item in meanlist:
 		if nodes % 2 == 0:
 			done = True
 			nodelist.append(nodes)
-
+linelist = []
 while counter < len(meanlist):
 	point1 = meanlist[counter]
 	point1a = point1[0]
@@ -87,20 +93,38 @@ while counter < len(meanlist):
 			point2b = sample[1]
 			del dummylist[newrand]
 			cvs.create_line(point1a,point1b,point2a,point2b,fill = 'red',width = 1.5)
+			datapoint = [point1a,point1b,point2a,point2b]
+			linelist.append(datapoint)
 		nodecounter = nodecounter + 1
 
 
 	counter = counter + 1
 def clicker(event):
+	global unclick
+	global previous
 	xevent = event.x
 	yevent = event.y
-	for item in shortpointlist:
-		xmin = item[0]
-		ymin = item[1]
-		xmax = item[2]
-		ymax = item[3] 
-		if xevent < xmax and xevent > xmin and yevent < ymax and yevent > ymin:
-			cvs.create_rectangle(xmin,ymin,xmax,ymax,fill = 'blue')
+	if unclick == 1:	
+		for item in shortpointlist:
+			xmin = item[0]
+			ymin = item[1]
+			xmax = item[2]
+			ymax = item[3] 
+			if xevent < xmax and xevent > xmin and yevent < ymax and yevent > ymin:
+				cvs.create_rectangle(xmin,ymin,xmax,ymax,fill = 'blue')
+				previous = [xmin,ymin,xmax,ymax]
+
+				xavg = (xmin+xmax)/2
+				yavg = (ymin+ymax)/2
+				for item in linelist:
+					if item[0] == xavg and item[1] == yavg:
+						cvs.create_line(item,fill = 'orange')
+
+	if unclick == -1:
+		if xevent < previous[2] and xevent > previous[0] and yevent < previous[3] and yevent > previous[1]:
+			cvs.create_rectangle(previous,fill = 'green')
+	unclick = unclick * -1	
+
 cvs.bind('<Button-1>',clicker)
 
 master.mainloop()
