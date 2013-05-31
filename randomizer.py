@@ -3,7 +3,7 @@ counter = 0
 counterlim = 5
 entrylist = []
 while counter < counterlim:
-  entry = input('enter a number greater than 10: ')
+	entry = input('enter a number greater than 10: ')
 	entrylist.append(entry)
 	counter = counter + 1
 
@@ -60,3 +60,6 @@ with open("/Users/melquiades/Desktop/datafile.txt", "a") as writefile:
 		thing = str(thing)
 		writefile.write(thing)
 		writefile.write('\n')
+print 'Entrylist: '
+for item in entrylist:
+	print str(item)
