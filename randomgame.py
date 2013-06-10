@@ -15,7 +15,7 @@ rawstring = 'creature'
 counter = 1
 taglist = []
 while counter <= mobnumber:
-  random1 = random.randint(0,cvswidth)
+	random1 = random.randint(0,cvswidth)
 	random2 = random.randint(0,cvsheight)
 
 	coord1 = random1
@@ -31,9 +31,11 @@ while counter <= mobnumber:
 	taglist.append(tagger)
 	counter = counter + 1
 
+newcolor = 'blue'
 while True:
+	cvs.create_rectangle(10,20,30,40,fill = newcolor)
+	#newcolor = newcolor + 1
 	for item in taglist:
-		print item
 		random1 = random.randint(0,1)
 		random2 = random.randint(0,1)
 
@@ -54,6 +56,18 @@ while True:
 		if coordsy > cvsheight:
 			random2 = 0
 
+		for element in taglist:
+			elecoords = cvs.coords(element)
+			xele = elecoords[0]
+			yele = elecoords[1]
+			if coordsx - xele < 5 and coordsx - xele > 0:
+				random1 = 0
+			if coordsx - xele > -5 and coordsx - xele < 0:
+				random1 = 1
+			if coordsy - yele < 5 and coordsy - yele > 0:
+				random2 = 0
+			if coordsy - yele > -5 and coordsy -yele > 0:
+				random2 = 1
 		
 
 
@@ -72,4 +86,3 @@ while True:
 		cvs.move(item,movex,movey)
 		cvs.update()
 master.mainloop()
-
