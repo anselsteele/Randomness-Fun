@@ -1,3 +1,4 @@
+outputlimit = input('enter number of output shuffles: ')
 complexity = input('enter number of loops to shuffle inputs: ')
 counter = 0
 counterlim = 5
@@ -55,11 +56,31 @@ while maincounter < complexity:
 	entrylist = shufflelist
 	maincounter = maincounter + 1
 open("/Users/melquiades/Desktop/datafile.txt", "w").close()
-with open("/Users/melquiades/Desktop/datafile.txt", "a") as writefile:
+openlooper = 0
+done = False
+while done == False:
+	
+	newentrylist = []
 	for thing in entrylist:
-		thing = str(thing)
-		writefile.write(thing)
-		writefile.write('\n')
-print 'Entrylist: '
-for item in entrylist:
-	print str(item)
+		newthing = int(thing)
+		newmod = newthing % 10
+		if newmod != 0:
+			newthing = newthing * newmod * 10
+			newthing = newthing/(newmod**2)
+			newthing = int(newthing)
+		newthing = str(newthing)
+		newentrylist.append(newthing)
+		print thing
+		print newthing
+		entrylist = newentrylist
+		with open("/Users/melquiades/Desktop/datafile.txt", "a") as writefile:
+			for thing in entrylist:
+				writefile.write(thing)
+				writefile.write('\n')
+
+	print 'Entrylist: '
+	for item in entrylist:
+		print str(item)
+	openlooper = openlooper + 1
+	if openlooper == outputlimit:
+		done = True
